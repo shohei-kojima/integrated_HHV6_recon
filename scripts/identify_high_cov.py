@@ -53,6 +53,10 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                             ave_depth= sum(covs) / total_len
                             if cov_len >= 1:
                                 ave_depth_norm= sum(covs) / cov_len
+                                if args.depth is not None:
+                                    ratio_ave_virus_depth_to_autosome_depth= str(ave_depth_norm / args.depth)
+                                else:
+                                    ratio_ave_virus_depth_to_autosome_depth='NA'
                                 high_cov_judge='False'
                                 if genome_covered >= params.genome_cov_thresholds:
                                     if ave_depth_norm >= params.ave_depth_of_mapped_region_threshold:
@@ -63,7 +67,7 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                             else:
                                 ave_depth_norm=0
                                 high_cov_judge='False'
-                            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, virus_names[prev_id]))
+                            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
                             tmp_retain=[]
                         total_len=0
                         covs=[]
@@ -79,6 +83,10 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
             ave_depth= sum(covs) / total_len
             if cov_len >= 1:
                 ave_depth_norm= sum(covs) / cov_len
+                if args.depth is not None:
+                    ratio_ave_virus_depth_to_autosome_depth= str(ave_depth_norm / args.depth)
+                else:
+                    ratio_ave_virus_depth_to_autosome_depth='NA'
                 high_cov_judge='False'
                 if genome_covered >= params.genome_cov_thresholds:
                     if ave_depth_norm >= params.ave_depth_of_mapped_region_threshold:
@@ -89,7 +97,7 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
             else:
                 ave_depth_norm=0
                 high_cov_judge='False'
-            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, virus_names[prev_id]))
+            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
         if len(high_cov) >= 1:
             log.logger.info('high_cov_virus=%s' % ';'.join([ l[0] for l in high_cov ]))
         global hhv6a_highcov

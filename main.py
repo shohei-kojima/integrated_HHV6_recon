@@ -32,6 +32,7 @@ parser.add_argument('-fq1', metavar='str', type=str, help='Specify unmapped fast
 parser.add_argument('-fq2', metavar='str', type=str, help='Specify unmapped fastq file, read-2 of read pairs.')
 parser.add_argument('-vref', metavar='str', type=str, help='Required. Specify reference of virus genomes, including HHV-6A and B. Example: viral_genomic_200405.fa')
 parser.add_argument('-vrefindex', metavar='str', type=str, help='Required. Specify hisat2 index of virus genomes, including HHV-6A and B. Example: viral_genomic_200405')
+parser.add_argument('-depth', metavar='int', type=int, help='Optional. Average depth of input BAM/CRAM file. Only available when using WGS data. If this option is true, will output virus_read_depth/chromosome_depth as well.')
 parser.add_argument('-bwa', help='Optional. Specify if you use BWA for mapping instead of hisat2.', action='store_true')
 parser.add_argument('-denovo', help='Optional. Specify if you want to perform de-novo assembly.', action='store_true')
 parser.add_argument('-picard', metavar='str', type=str, help='Required. Specify full path to picard.jar. Example: /path/to/picard/picard.jar')
