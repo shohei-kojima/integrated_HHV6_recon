@@ -3,6 +3,7 @@
 # Flowchart
 <img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
 
+
 # 0. prerequisites
 ### required softwares for running with default setting
 - Linux (recommended: Ubuntu 18.04)
@@ -114,6 +115,7 @@ This is one of the main result files for most users. This contains read coverage
     - perc_genome_mapped: Percent of virus genome with one or more reads
     - average_depth: Average of mapped read depth (average of whole genome)
     - average_depth_of_mapped_region: Average of mapped read depth of mapped regions (average of only mapped regions)
+    - ratio_ave_virus_depth_to_autosome_depth: Average of mapped read depth of mapped regions devided by autosome depth provided with '-depth' option. Available only when '-depth' option was specified. Otherwise, 'NA'.
 - 4th column: attribution of fasta header
 
 ### 'hhv6a_reconstructed.fa', 'hhv6b_reconstructed.fa'
@@ -170,6 +172,12 @@ Use when specifing reference virus genome file available from NCBI. This option 
 
 ### '-vrefindex [index of reference virus genome file]'
 Use when specifing reference virus genome index. This option is always required. See 'preparing virus genome reference file' section for detail.
+
+### '-depth'
+When you are using WGS data, you can specify autosome depth with this option. When specified, this pipeline output (average_depth_of_mapped_region / autosome depth). This is particularly important when juding a detected virus sequence is inherited chromosomally integrated sequence or not.
+
+### '-phage'
+When specified, this pipeline also reconstructs phage sequences. Generally, there are lots of phage-derived sequences (incld. spike-in PhiX). By default, this pipeline does not reconstruct when a virus genome name contained the word 'phage' or 'Phage'.
 
 ### '-picard [picard.jar file]'
 Use when specifing the path to 'picard.jar' file. This option is always required. 
