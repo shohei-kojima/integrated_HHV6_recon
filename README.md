@@ -237,10 +237,10 @@ Please specify './bwa_index/viral_genomic_seq' with '-vrefindex' option.
 
 
 # Option. Prepare read depth of autosomes when using a WGS sample.
-Before using this script, you need to run 'samtools coverage' to calculate depth of each chromosome. You need to use samtools 1.10 or later to use 'coverage' function. The output from 'samtools coverage' contains mean depth of each chromosome. This program takes the output file from 'samtools coverage' to calculate mean depth of autosomes. You can specify the output file with '-i' option. You can specify names of autosomes by specifying a file containing names of autosomes with -chr option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_stype.txt' by default.
+Before using this script, you need to run 'samtools coverage' to calculate depth of each chromosome. You need to use samtools 1.10 or later to use 'coverage' function. The output from 'samtools coverage' contains mean depth of each chromosome. This program takes the output file from 'samtools coverage' to calculate mean depth of autosomes. You can specify the output file with '-i' option. You can specify names of autosomes by specifying a file containing names of autosomes with -chr option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_style.txt' by default.
 ```
 samtools coverage --reference ref.fa in.cram > samtools_coverage.txt
-python calc_mapping_depth.py -i samtools_coverage.txt -chr /path/to/prog/lib/human_autosomes_ucsc_stype.txt -o autosome_depth.txt
+python calc_mapping_depth.py -i samtools_coverage.txt -chr /path/to/prog/lib/human_autosomes_ucsc_style.txt -o autosome_depth.txt
 ```
 The output file 'autosome_depth.txt' contains one line with 3 columns. 
 - 1st column: average depth of autosomes

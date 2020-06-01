@@ -66,6 +66,10 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                                         high_cov_judge='True'
                             else:
                                 ave_depth_norm=0
+                                if args.depth is not None:
+                                    ratio_ave_virus_depth_to_autosome_depth='0'
+                                else:
+                                    ratio_ave_virus_depth_to_autosome_depth='NA'
                                 high_cov_judge='False'
                             outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
                             tmp_retain=[]
@@ -96,6 +100,10 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                         high_cov_judge='True'
             else:
                 ave_depth_norm=0
+                if args.depth is not None:
+                    ratio_ave_virus_depth_to_autosome_depth='0'
+                else:
+                    ratio_ave_virus_depth_to_autosome_depth='NA'
                 high_cov_judge='False'
             outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
         if len(high_cov) >= 1:
