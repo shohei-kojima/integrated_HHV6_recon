@@ -1,8 +1,7 @@
 # This is a README file for iciHHV6_reconstruction_pipeline
 
 # Flowchart
-![chart](https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png)
-
+<img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
 
 # 0. prerequisites
 ### required softwares for running with default setting
