@@ -155,14 +155,14 @@ Use when specifing CRAM file. Available only when '-alignmentin' is also specifi
 Specify when you use all discordant reads from BAM or CRAM file.
 By default, only unmapped reads for mapping to viruses when BAM or CRAM file is specified as an input. If you want to use all discordant reads (e.g. reads without sam flag '2') for mapping to viruses, you can specify '-all_discordant' option. The discordant reads includes read-pairs with distant mapped positions and ones with low MAPQ; therefore, the number of discordant reads are far higher than unmapped reads. This option is only available when '-alignmentin' option was specified. Although this option is less accurate than default setting (= use only unmapped reads), the coverage of reconstructed sequence is longer than default. Please use this at your own risk.
 
-### '-unmappedin'
+### '-fastqin'
 Specify when you use fastq files as inputs. You also need to specify your input file with '-fq1' or '-fq2' options.
 
 ### '-fq1 [read_1 fastq file] -fq2 [read_2 fastq file]'
-Use when specifing paired fastq files. Available only when '-unmappedin' is also specified.
+Use when specifing paired fastq files. Available only when '-fastqin' is also specified.
 
 ### '-single -fq [fastq file]'
-Use when specifying single-end fastq file. Available only when '-unmappedin' is also specified.
+Use when specifying single-end fastq file. Available only when '-fastqin' is also specified.
 
 ### '-vref [reference virus genome file]'
 Use when specifing reference virus genome file available from NCBI. This option is always required. See 'preparing virus genome reference file' section for detail.
