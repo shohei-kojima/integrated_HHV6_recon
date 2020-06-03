@@ -42,8 +42,8 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                 for line in infile:
                     ls=line.split()
                     if ls[0] == prev_id:
-                        if int(ls[3]) >= 1:
-                            cov=int(ls[3])
+                        if int(float(ls[3])) >= 1:
+                            cov=int(float(ls[3]))
                             for _ in range(int(ls[1]), int(ls[2])):
                                 covs.append(cov)
                     else:
@@ -75,8 +75,8 @@ def identify_high_cov_virus_from_bedgraph(args, params, filenames):
                             tmp_retain=[]
                         total_len=0
                         covs=[]
-                        if int(ls[3]) >= 1:
-                            cov=int(ls[3])
+                        if int(float(ls[3])) >= 1:
+                            cov=int(float(ls[3]))
                             for _ in range(int(ls[1]), int(ls[2])):
                                 covs.append(cov)
                     total_len += int(ls[2]) - int(ls[1])
