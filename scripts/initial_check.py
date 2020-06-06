@@ -81,8 +81,11 @@ def check(args, argv):
             if os.path.exists(args.vrefindex +'.1.ht2') is False:
                 log.logger.error('hisat2 index (%s) was not found.' % args.vrefindex)
                 exit(1)
-        if args.c is True:
-            if os.path.exists(args.fa) is False:
+        if args.c is not None:
+            if args.fa is None:
+                log.logger.error('Reference genome (%s) was not specified.' % args.fa)
+                exit(1)
+            elif os.path.exists(args.fa) is False:
                 log.logger.error('Reference genome (%s) was not found.' % args.fa)
                 exit(1)
         if args.alignmentin is False and args.fastqin is False:
