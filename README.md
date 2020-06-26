@@ -5,7 +5,7 @@
 
 
 # 0. prerequisites
-### required softwares for running with default setting
+### required software for running with default settings
 - Linux (recommended: Ubuntu 18.04)
 
 - Python 3.7 or later
@@ -34,7 +34,7 @@ git clone https://github.com/shohei-kojima/iciHHV6_reconstruction
 
 
 
-# 2. quick usage guide for impatient
+# 2. quick usage guide for the impatient
 
 ### when you use your BAM file as an input (alignmentin option)
 ```
@@ -62,7 +62,7 @@ python main.py \
 ```
 In this case, you need to specify your CRAM file with '-c' option. You also need to specify '-alignmentin' option and '-fa' option as well.
 
-### when you use all discordant reads in BAM/CRAM file for mapping to virus genome (alignmentin option + all_discordant option)
+### when you use all discordant reads in BAM/CRAM file for mapping to the virus genome (alignmentin option + all_discordant option)
 ```
 python main.py \
 -alignmentin \
@@ -119,7 +119,7 @@ This is one of the main result files for most users. This contains read coverage
 - 4th column: attribution of fasta header
 
 ### 'hhv6a_reconstructed.fa', 'hhv6b_reconstructed.fa'
-This is one of the main result files for most users. This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 read mapped) are masked by a character 'N.'
+This is one of the main result files for most users. This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.'
 
 ### 'high_coverage_viruses.pdf'
 This is one of the main result files for most users. If there is one or more viruses in your sample, this tool outputs read coverage of those viruses.
