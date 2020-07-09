@@ -8,12 +8,12 @@
 ### required software for running with default settings
 - Linux (recommended: Ubuntu 18.04)
 
-- Python 3.7 or later
+- Python 3.7 or later  **Please use Python 3.7 or later. Python 3.6 does NOT work!**
 - pysam 0.15.2 or later
 - matplotlib 3.1.1 or later
 
 - hisat2 2.1.0 or later 
-- samtools 1.9 or later
+- samtools 1.10 or later
 - bcftools 1.9 or later
 - bamCoverage 3.3.1 or later (deeptools 3.3.1 or later)
 - gatk 4.1.7.0 or later
@@ -29,9 +29,60 @@ os,sys,datetime,multiprocessing,logging,traceback,argparse,glob,pylab,subprocess
 
 
 
-# 1. download this tool from GitHub (currently not public)
+# 1. Getting started
+### download this tool from GitHub (currently not public)
 git clone https://github.com/shohei-kojima/iciHHV6_reconstruction
 
+### set up computational environment
+All tools listed in `0. Prerequisites` are needed to be installed and added to $PATH.
+We recommend to use Anaconda3.
+
+### install python modules
+```
+conda install -c bioconda pysam 
+conda install -c bioconda matplotlib
+```
+
+### install hisat2, bcftools, deeptools
+```
+conda install -c bioconda hisat2 
+conda install -c bioconda bcftools 
+conda install -c bioconda deeptools
+```
+
+### install samtools
+Because this pipeline requires samtools1.10, please do NOT use `conda` for installation of samtools. Conda installs samtools 1.9. Please download a latest version from htslib homepage (http://www.htslib.org/download/). 
+```
+# install
+wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2
+tar xf samtools-1.10.tar.bz2
+cd samtools-1.10
+./configure --prefix=/where/to/install
+make
+make install
+
+# add below to '~/.bashrc'
+export PATH=/where/to/install/bin:$PATH
+```
+
+### install gatk
+```
+# install
+wget https://github.com/broadinstitute/gatk/releases/download/4.1.8.0/gatk-4.1.8.0.zip
+unzip gatk-4.1.8.0.zip
+
+# add below to '~/.bashrc'
+export PATH=/where/to/install/gatk-4.1.8.0:$PATH
+```
+
+### install picard
+```
+# install
+wget https://github.com/broadinstitute/picard/releases/download/2.23.1/picard.jar
+
+# test run; command below should print help message if picard works without problem
+java -jar /where/to/install/picard.jar -h
+```
 
 
 # 2. quick usage guide for the impatient

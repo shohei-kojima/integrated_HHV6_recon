@@ -132,23 +132,26 @@ mapping.map_to_viruses(args, params, filenames)
 if args.alignmentin is True:
     utils.gzip_or_del(args, params, filenames.unmapped_merged_1)
     utils.gzip_or_del(args, params, filenames.unmapped_merged_2)
-log.logger.info('BAM to bedgraph conversion started.')
-mapping.bam_to_bedgraph(args, params, filenames)
-
-# 2. identify high coverage viruses
-import identify_high_cov
-log.logger.info('Identification of high-coverage viruses started.')
-identify_high_cov.identify_high_cov_virus_from_bedgraph(args, params, filenames)
-
-# 3. reconstruct HHV-6
-import reconstruct_hhv6
-if identify_high_cov.hhv6a_highcov is True:
-    log.logger.info('HHV-6A sequence reconstruction started.')
-    reconstruct_hhv6.reconst_a(args, params, filenames, hhv6a_refid)
-if identify_high_cov.hhv6b_highcov is True:
-    log.logger.info('HHV-6B sequence reconstruction started.')
-    reconstruct_hhv6.reconst_b(args, params, filenames, hhv6b_refid)
-if args.keep is False:
-    os.remove(filenames.mapped_to_virus_bai)
+if mapping.read_mapped is True:
+    log.logger.info('BAM to bedgraph conversion started.')
+    mapping.bam_to_bedgraph(args, params, filenames)
+    
+    # 2. identify high coverage viruses
+    import identify_high_cov
+    log.logger.info('Identification of high-coverage viruses started.')
+    identify_high_cov.identify_high_cov_virus_from_bedgraph(args, params, filenames)
+    
+    # 3. reconstruct HHV-6
+    import reconstruct_hhv6
+    if identify_high_cov.hhv6a_highcov is True:
+        log.logger.info('HHV-6A sequence reconstruction started.')
+        reconstruct_hhv6.reconst_a(args, params, filenames, hhv6a_refid)
+    if identify_high_cov.hhv6b_highcov is True:
+        log.logger.info('HHV-6B sequence reconstruction started.')
+        reconstruct_hhv6.reconst_b(args, params, filenames, hhv6b_refid)
+    if args.keep is False:
+        os.remove(filenames.mapped_to_virus_bai)
+else:
+    log.logger.info('No read was mapped.')
 
 log.logger.info('All analysis finished!')

@@ -47,6 +47,17 @@ def map_to_viruses(args, params, filenames):
         # remove unnecessary files
         if args.keep is False:
             os.remove(filenames.mapped_sorted)
+        # check mapped = 0
+        global read_mapped
+        read_mapped=True
+        with open(filenames.markdup_metrix) as infile:
+            for line in infile:
+                if 'Unknown Library' in line:
+                    ls=line.split()
+                    if int(ls[2]) == 0:
+                        read_mapped=False
+                    break
+
     except:
         log.logger.error('\n'+ traceback.format_exc())
         exit(1)
