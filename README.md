@@ -155,6 +155,42 @@ python main.py \
 
 
 # 3. output files
+### Here are the typical output files
+```
+# output files
+./result_out/
+├── for_debug.log
+├── hhv6a_reconstructed.fa
+├── hhv6a.vcf.gz
+├── high_coverage_viruses.pdf
+├── mapped_to_virus.bedgraph
+├── mapped_to_virus_dedup.bam
+├── mark_duplicate_metrix.txt
+└── virus_detection_summary.txt
+
+# file size (30x BAM was used as input)
+24K     ./result_out/for_debug.log
+160K    ./result_out/hhv6a_reconstructed.fa
+172K    ./result_out/hhv6a.vcf.gz
+400K    ./result_out/high_coverage_viruses.pdf
+1.2M    ./result_out/mapped_to_virus.bedgraph
+8.2M    ./result_out/mapped_to_virus_dedup.bam
+4.0K    ./result_out/mark_duplicate_metrix.txt
+3.3M    ./result_out/virus_detection_summary.txt
+
+# brief explanation of output files
+./result_out/
+├── for_debug.log               # log file
+├── hhv6a_reconstructed.fa      # reconstructed HHV-6
+├── hhv6a.vcf.gz                # VCF of HHV-6
+├── high_coverage_viruses.pdf   # HHV-6 mapping pattern
+├── mapped_to_virus.bedgraph    # mapping coverage
+├── mapped_to_virus_dedup.bam   # mapped bam
+├── mark_duplicate_metrix.txt   # gatk markduplicate output
+└── virus_detection_summary.txt # main summary file
+```
+
+
 ### 'virus_detection_summary.txt'
 This is one of the main result files for most users. This contains read coverage information of each virus genome used in the viral genomes input file. Currently, this pipeline is supported for detecting and reconstructing endogenous or chromosomally-integrated HHV-6, in which case exogenous HHV-6A and HHV-6B reference sequences are used. However, the computational cost of adding additional viral genomes for detection is low, and we have been able to detect (but not reconstruct) other integrated viruses using this pipeline.
 
