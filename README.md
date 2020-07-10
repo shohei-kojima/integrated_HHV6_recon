@@ -124,7 +124,10 @@ python main.py \
 -picard /path/to/picard.jar \
 -p 4
 ```
-By default, only unmapped reads are used for mapping to viruses when BAM or CRAM file is specified as an input. If you want to use all discordant reads (e.g. reads without sam flag '2') for mapping to viruses, you can specify '-all_discordant' option. Discordant reads include read-pairs with distantly mapped positions and ones with low MAPQ; therefore, the number of discordant reads are far higher than unmapped reads. This option is only available when '-alignmentin' option is specified. This option is susspected to be less accurate than using default settingss (= using only unmapped reads), however the coverage of reconstructed sequence may be higher than default. Please be aware of this caveat when using this option.
+
+This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM file with single-end reads is NOT supported.
+
+By default, only unmapped reads are used for mapping to viruses when BAM or CRAM file is specified as an input. If you want to use all discordant reads (e.g. reads without sam flag '2') for mapping to viruses, you can specify '-all_discordant' option. Discordant reads include read-pairs with distantly mapped positions and ones with low MAPQ; therefore, the number of discordant reads are far higher than unmapped reads. This option is only available when '-alignmentin' option is specified. This option is suspected to be less accurate than using default settingss (= using only unmapped reads), however the coverage of reconstructed sequence may be higher than default. Please be aware of this caveat when using this option.
 
 ### when you use your fastq files as inputs (fastqin option)
 ```
@@ -183,9 +186,9 @@ python main.py \
 ├── for_debug.log               # log file
 ├── hhv6a_reconstructed.fa      # reconstructed HHV-6
 ├── hhv6a.vcf.gz                # VCF of HHV-6
-├── high_coverage_viruses.pdf   # HHV-6 mapping pattern
+├── high_coverage_viruses.pdf   # plot of HHV-6 read depth
 ├── mapped_to_virus.bedgraph    # mapping coverage
-├── mapped_to_virus_dedup.bam   # mapped bam
+├── mapped_to_virus_dedup.bam   # bam with reads used for analysis
 ├── mark_duplicate_metrix.txt   # gatk markduplicate output
 └── virus_detection_summary.txt # main summary file
 ```
@@ -261,7 +264,7 @@ Use when specifing reference virus genome file available from NCBI. This option 
 Use when specifing reference virus genome index. This option is always required. See 'preparing virus genome reference file' section for detail.
 
 ### '-depth'
-When you are using WGS data, you can specify autosome depth with this option. When specified, this pipeline outputs (average_depth_of_mapped_region / autosome depth). This is particularly important when juding whether a detected virus sequence is present with most cell's DNA or not.
+This is optional, but we highly recommend to use this. When you are using WGS data, you can specify autosome depth with this option. When specified, this pipeline outputs a value (average_depth_of_mapped_region / autosome depth). This is particularly important when juding whether a detected virus sequence is present with most cell's DNA or not. Please see a section [6. (Optional) Prepare read depth of autosomes when using a WGS sample.] for more details.
 
 ### '-phage'
 When specified, this pipeline also reconstructs phage sequences. Generally, there are lots of phage-derived sequences (including spike-in PhiX) in  WGS data. By default, this pipeline does not reconstruct virus genomes whose name contains the word 'phage' or 'Phage'.
@@ -332,8 +335,9 @@ Please specify './bwa_index/viral_genomic_seq' with '-vrefindex' option.
 
 
 
-# Option. Prepare read depth of autosomes when using a WGS sample.
-Before using this script, you need to run 'samtools coverage' to calculate depth of each chromosome. You need to use samtools 1.10 or later to use 'coverage' function. The output from 'samtools coverage' contains mean depth of each chromosome. This program takes the output file from 'samtools coverage' to calculate mean depth of autosomes. You can specify the output file with '-i' option. You can specify names of autosomes by specifying a file containing names of autosomes with -chr option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_style.txt' by default.
+# 6. (Optional) Prepare read depth of autosomes when using a WGS sample.
+We highly recommend to input autosome depth of an input WGS to calculate a value: average_depth_of_mapped_region / autosome depth.
+You first need to run `samtools coverage` to calculate depth of each chromosome. The output from `samtools coverage` contains mean depth of each chromosome. This program takes the output file from `samtools coverage` to calculate mean depth of autosomes. Please specify the output file from `samtools coverage` with the '-i' option. Please specify names of autosomes by specifying a file containing names of autosomes with '-chr' option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_style.txt' by default.
 ```
 samtools coverage --reference ref.fa in.cram > samtools_coverage.txt
 python calc_mapping_depth.py -i samtools_coverage.txt -chr /path/to/prog/lib/human_autosomes_ucsc_style.txt -o autosome_depth.txt
@@ -356,3 +360,10 @@ python main.py \
 -picard /path/to/picard.jar \
 -p 4
 ```
+
+# LICENSE
+Copyright (c) 2020 RIKEN
+All Rights Reserved.
+See file LICENSE for details.
+
+This tool was developed by Shohei Kojima and Nicholas F. Parrish.
