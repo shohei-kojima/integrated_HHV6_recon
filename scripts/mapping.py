@@ -36,7 +36,7 @@ def map_to_viruses(args, params, filenames):
         if not args.keep is True:
             os.remove(filenames.mapped_unsorted_bam)
         # mark duplicate
-        cmd='java -jar %s MarkDuplicates CREATE_INDEX=true I=%s O=%s M=%s' % (args.picard, filenames.mapped_sorted, filenames.mapped_to_virus_bam, filenames.markdup_metrix)
+        cmd='java -Xms896m -Xmx2688m -jar %s MarkDuplicates CREATE_INDEX=true I=%s O=%s M=%s' % (args.picard, filenames.mapped_sorted, filenames.mapped_to_virus_bam, filenames.markdup_metrix)
         log.logger.debug('picard command = `'+ cmd +'`')
         out=subprocess.run(cmd, shell=True, stderr=subprocess.PIPE)
         log.logger.debug('\n'+ '\n'.join([ l.decode() for l in out.stderr.splitlines() ]))

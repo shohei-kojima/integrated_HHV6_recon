@@ -15,6 +15,8 @@ import log,traceback
 def setup(args, base):
     log.logger.debug('started')
     try:
+        sys.setrecursionlimit(10000)
+        
         # load parameter settings
         import load_parameters
         global params
