@@ -38,14 +38,14 @@ def retrieve_unmapped_reads(args, params, filenames):
                 pysam.sort('-@', '%d' % thread_n, '-n', '-O', 'BAM', '-o', filenames.unmapped_sorted_34, filenames.unmapped_bam_34)
                 pysam.fastq('-@', '%d' % thread_n, '-N', '-0', '/dev/null', '-1', filenames.unmapped_3, '-2', filenames.unmapped_4, '-s', '/dev/null', filenames.unmapped_sorted_34)
             # concatenate fastq
-            with open(filenames.unmapped_merged_1, 'w') as outfile:
+            with open(filenames.unmapped_merged_pre1, 'w') as outfile:
                 for f in [filenames.unmapped_1, filenames.unmapped_3]:
                     if os.path.exists(f) is True:
                         with open(f) as infile:
                             for line in infile:
                                 outfile.write(line)
                         utils.gzip_or_del(args, params, f)
-            with open(filenames.unmapped_merged_2, 'w') as outfile:
+            with open(filenames.unmapped_merged_pre2, 'w') as outfile:
                 for f in [filenames.unmapped_2, filenames.unmapped_4]:
                     if os.path.exists(f) is True:
                         with open(f) as infile:
