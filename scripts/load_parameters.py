@@ -17,6 +17,7 @@ class load:
             self.genome_cov_thresholds=0.05   # Defining high coverage viruses relies greatly on this parameter
             self.ave_depth_of_mapped_region_threshold=3    # Defining high coverage viruses relies greatly on this parameter
             self.hisat2_mismatch_penalties='2,1'
+            self.min_seq_len=20
             self.bedgraph_bin=1
             self.reconst_minimum_depth=1
             self.gzip_compresslevel=1
