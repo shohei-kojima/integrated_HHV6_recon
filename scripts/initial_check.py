@@ -63,9 +63,6 @@ def check(args, argv):
             if which('metaspades.py') is None:
                 log.logger.error('metaspades.py not found in $PATH. Please check metaspades.py is installed and added to PATH.')
                 exit(1)
-        if os.path.exists(args.picard) is False:
-            log.logger.error('%s not found. Please check %s is installed.' % (args.picard, args.picard))
-            exit(1)
 
         # check prerequisite modules
         import gzip
@@ -74,11 +71,17 @@ def check(args, argv):
         
         # for singularity
         if args.singularity is True:
-            args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hhv6.fa'
-            args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hisat2_index/hhv6'
-            args.picard='/usr/local/bin/picard.jar'
+            if args.vref is None:
+                args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hhv6.fa'
+            if args.vrefindex is None:
+                args.vrefindex='/usr/local/bin/iciHHV6_reconstruction/lib/hisat2_index/hhv6'
+            if args.picard is None:
+                args.picard='/usr/local/bin/picard.jar'
         
         # check file paths
+        if os.path.exists(args.picard) is False:
+            log.logger.error('%s not found. Please check %s is installed.' % (args.picard, args.picard))
+            exit(1)
         if args.bwa is True:
             if os.path.exists(args.vrefindex +'.bwt') is False:
                 log.logger.error('bwa index (%s) was not found.' % args.vrefindex)
