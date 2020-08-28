@@ -72,6 +72,12 @@ def check(args, argv):
         import matplotlib
         import pysam
         
+        # for singularity
+        if args.singularity is True:
+            args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hhv6.fa'
+            args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hisat2_index/hhv6'
+            args.picard='/usr/local/bin/picard.jar'
+        
         # check file paths
         if args.bwa is True:
             if os.path.exists(args.vrefindex +'.bwt') is False:
