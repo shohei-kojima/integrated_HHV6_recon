@@ -7,7 +7,6 @@
 # 1. Getting started
 ## 1.1 Use Singularity container (recommended)
 This tool is available as a Singularity container.
-
 Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
 Please contact us when you would like to use this.
 
@@ -16,11 +15,12 @@ It requires Singularity version 3 (does not work on version 2).
 Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
 
 
-## 1.2 Set up required environment in your Linux
-You can also set up environment in your Linux for this tool.
+## 1.2 Use scripts available from GitHub
+You can use the original scripts available from GitHub instead of the Singularity container.
+In this case, you need to set up environment in your Linux for this tool.
 We tested this tool in Ubuntu 18.04, CentOS 7.7.1908, Red Hat 7.3.
 
-### required software for running with default settings
+### Required software for running with default settings
 All tools listed here are needed to be installed and added to $PATH.
 We recommend to use Anaconda3.
 
@@ -33,32 +33,32 @@ We recommend to use Anaconda3.
 - picard 2.21.9 or later
 - java (version matches to your picard)
 
-### optional prerequisites
+### Optional prerequisites
 - bwa 0.7.17 or later (if you specify '-bwa' option)
 - SPAdes genome assembler v3.13.1 or later (if you specify '-denovo' option)
 
-### required Python modules
+### Required Python modules
 - pysam 0.15.2 or later
 - matplotlib 3.1.1 or later
 - built-in modules: os,sys,datetime,multiprocessing,logging,traceback,argparse,glob,pylab,subprocess,gzip
 
-### download this tool from GitHub (currently not public)
+### Download this tool from GitHub (currently not public)
 git clone https://github.com/shohei-kojima/iciHHV6_reconstruction
 
-### install python modules
+### Install python modules
 ```
 conda install -c bioconda pysam 
 conda install -c bioconda matplotlib
 ```
 
-### install hisat2, bcftools, deeptools
+### Install hisat2, bcftools, deeptools
 ```
 conda install -c bioconda hisat2 
 conda install -c bioconda bcftools 
 conda install -c bioconda deeptools
 ```
 
-### install samtools
+### Install samtools
 Because this pipeline requires samtools1.10, please do NOT use `conda` for installation of samtools. Conda installs samtools 1.9. Please download a latest version from htslib homepage (http://www.htslib.org/download/). 
 ```
 # install
@@ -73,7 +73,7 @@ make install
 export PATH=/where/to/install/bin:$PATH
 ```
 
-### install gatk
+### Install gatk
 ```
 # install
 wget https://github.com/broadinstitute/gatk/releases/download/4.1.8.0/gatk-4.1.8.0.zip
@@ -83,7 +83,7 @@ unzip gatk-4.1.8.0.zip
 export PATH=/where/to/install/gatk-4.1.8.0:$PATH
 ```
 
-### install picard
+### Install picard
 ```
 # install
 wget https://github.com/broadinstitute/picard/releases/download/2.23.1/picard.jar
@@ -98,7 +98,7 @@ java -jar /where/to/install/picard.jar -h
 We highly recommend to use Singularity container. This container have exactly the same functionality to the original scripts in GitHub.
 This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM file with single-end reads is NOT supported.
 
-### when you use your BAM file as an input (alignmentin option)
+### when you use your BAM file as an input
 ```
 singularity exec iciHHV6_reconstruction_[version].sif reconst \
 -alignmentin \
@@ -106,7 +106,7 @@ singularity exec iciHHV6_reconstruction_[version].sif reconst \
 -p 4
 ```
 
-### when you use your CRAM file as an input (alignmentin option)
+### when you use your CRAM file as an input
 ```
 singularity exec iciHHV6_reconstruction_[version].sif reconst \
 -alignmentin \
@@ -115,7 +115,7 @@ singularity exec iciHHV6_reconstruction_[version].sif reconst \
 -p 4
 ```
 
-### when you use your fastq files as inputs (fastqin option)
+### when you use your fastq files as inputs
 ```
 singularity exec iciHHV6_reconstruction_[version].sif reconst \
 -fastqin \
