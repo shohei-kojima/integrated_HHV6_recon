@@ -5,13 +5,14 @@
 
 
 # 1. Getting started
-## 1.1 Singularity container (recommended)
+## 1.1 Use Singularity container (recommended)
 This tool is available as a Singularity container.
+
 Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
 Please contact us when you would like to use this.
 
 ### Prerequisites
-Singularity version 3 (does not work on version 2).
+It requires Singularity version 3 (does not work on version 2).
 Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
 
 
