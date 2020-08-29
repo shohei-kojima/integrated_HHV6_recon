@@ -10,14 +10,15 @@ This tool is available as a Singularity container.
 Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
 Please contact us when you would like to use this.
 
-### Prerequisites
-It requires Singularity version 3 (does not work on version 2).
+It requires Singularity version 3 (does not work on version 2) to run the container.
 Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
 
+You do NOT need to set up environment described in the next chapeter `1.2 Use scripts available from GitHub`, when you use the Singularity container.
 
 ## 1.2 Use scripts available from GitHub
 You can use the original scripts available from GitHub instead of the Singularity container.
 In this case, you need to set up environment in your Linux for this tool.
+Envriomnet set-up described below is not needed if you use the Singularity container.
 We tested this tool in Ubuntu 18.04, CentOS 7.7.1908, Red Hat 7.3.
 
 ### Required software for running with default settings
