@@ -4,14 +4,26 @@
 <img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
 
 
-# 0. prerequisites
+# 1. Getting started
+## 1.1 Singularity container (recommended)
+This tool is available as a Singularity container.
+Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
+Please contact us when you would like to use this.
+
+### Prerequisites
+Singularity version 3 (does not work on version 2).
+Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
+
+
+## 1.2 Set up required environment in your Linux
+You can also set up environment in your Linux for this tool.
+We tested this tool in Ubuntu 18.04, CentOS 7.7.1908, Red Hat 7.3.
+
 ### required software for running with default settings
-- Linux (recommended: Ubuntu 18.04)
+All tools listed here are needed to be installed and added to $PATH.
+We recommend to use Anaconda3.
 
 - Python 3.7 or later  **Please use Python 3.7 or later. Python 3.6 does NOT work!**
-- pysam 0.15.2 or later
-- matplotlib 3.1.1 or later
-
 - hisat2 2.1.0 or later 
 - samtools 1.10 or later
 - bcftools 1.9 or later
@@ -24,18 +36,13 @@
 - bwa 0.7.17 or later (if you specify '-bwa' option)
 - SPAdes genome assembler v3.13.1 or later (if you specify '-denovo' option)
 
-### required Python built-in modules
-os,sys,datetime,multiprocessing,logging,traceback,argparse,glob,pylab,subprocess,gzip
+### required Python modules
+- pysam 0.15.2 or later
+- matplotlib 3.1.1 or later
+- built-in modules: os,sys,datetime,multiprocessing,logging,traceback,argparse,glob,pylab,subprocess,gzip
 
-
-
-# 1. Getting started
 ### download this tool from GitHub (currently not public)
 git clone https://github.com/shohei-kojima/iciHHV6_reconstruction
-
-### set up computational environment
-All tools listed in `0. Prerequisites` are needed to be installed and added to $PATH.
-We recommend to use Anaconda3.
 
 ### install python modules
 ```
@@ -86,12 +93,46 @@ java -jar /where/to/install/picard.jar -h
 
 
 # 2. quick usage guide for the impatient
+## 2.1 Run Singularity container (recommended)
+We highly recommend to use Singularity container. This container have exactly the same functionality to the original scripts in GitHub.
+This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM file with single-end reads is NOT supported.
+
+### when you use your BAM file as an input (alignmentin option)
+```
+singularity exec iciHHV6_reconstruction_[version].sif reconst \
+-alignmentin \
+-b your_file.bam \
+-p 4
+```
+
+### when you use your CRAM file as an input (alignmentin option)
+```
+singularity exec iciHHV6_reconstruction_[version].sif reconst \
+-alignmentin \
+-c your_file.cram \
+-fa /path/to/reference_genome_of_cram.fa \
+-p 4
+```
+
+### when you use your fastq files as inputs (fastqin option)
+```
+singularity exec iciHHV6_reconstruction_[version].sif reconst \
+-fastqin \
+-fq1 your_file_1.fastq \
+-fq2 your_file_2.fastq \
+-p 4
+```
+
+
+## 2.2 Run Script downloaded from GitHub
+This tool is also available from GitHub. When Singularity is not available, you can use the scripts from GitHub.
+In this case, you need to set up environment required for this tool. For details, please see `1.2 Set up required environment in your Linux`. 
 
 ### when you use your BAM file as an input (alignmentin option)
 ```
 python main.py \
 -alignmentin \
--b test.bam \
+-b your_file.bam \
 -vref /path/to/viral_genomic_seq.fa \
 -vrefindex /path/to/viral_genomic_seq_hisat2_index \
 -picard /path/to/picard.jar \
@@ -104,8 +145,8 @@ In this case, you need to specify your BAM file with '-b' option. You also need 
 ```
 python main.py \
 -alignmentin \
--c test.cram \
--fa /path/to/reference/genome/of/cram/GRCh38.fa \
+-c your_file.cram \
+-fa /path/to/reference_genome_of_cram.fa \
 -vref /path/to/viral_genomic_seq.fa \
 -vrefindex /path/to/viral_genomic_seq_hisat2_index \
 -picard /path/to/picard.jar \
@@ -118,7 +159,7 @@ In this case, you need to specify your CRAM file with '-c' option. You also need
 python main.py \
 -alignmentin \
 -all_discordant \
--b test.bam \
+-b your_file.bam \
 -vref /path/to/viral_genomic_seq.fa \
 -vrefindex /path/to/viral_genomic_seq_hisat2_index \
 -picard /path/to/picard.jar \
@@ -133,8 +174,8 @@ By default, only unmapped reads are used for mapping to viruses when BAM or CRAM
 ```
 python main.py \
 -fastqin \
--fq1 test_1.fastq \
--fq2 test_2.fastq \
+-fq1 your_file_1.fastq \
+-fq2 your_file_2.fastq \
 -vref /path/to/viral_genomic_seq.fa \
 -vrefindex /path/to/viral_genomic_seq_hisat2_index \
 -picard /path/to/picard.jar \
@@ -258,10 +299,12 @@ Use when specifing paired fastq files. Available only when '-fastqin' is also sp
 Use when specifying single-end fastq file. Available only when '-fastqin' is also specified.
 
 ### '-vref [reference virus genome file]'
-Use when specifing reference virus genome file available from NCBI. This option is always required. See 'preparing virus genome reference file' section for details.
+You do not need to specify this when running the Singularity container. Singularity container already contains iciHHV-6A and iciHHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
+Use when specifing reference virus genome file available from NCBI. This option is always required when running scripts downloaded from GitHub. See 'preparing virus genome reference file' section for details.
 
 ### '-vrefindex [index of reference virus genome file]'
-Use when specifing reference virus genome index. This option is always required. See 'preparing virus genome reference file' section for detail.
+You do not need to specify this when running the Singularity container. Singularity container already contains hisat2 index of iciHHV-6A and iciHHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
+Use when specifing reference virus genome index. This option is always required when running scripts downloaded from GitHub. See 'preparing virus genome reference file' section for detail.
 
 ### '-depth'
 This is optional, but we highly recommend to use this. When you are using WGS data, you can specify autosome depth with this option. When specified, this pipeline outputs a value (average_depth_of_mapped_region / autosome depth). This is particularly important when juding whether a detected virus sequence is present with most cell's DNA or not. Please see a section [6. (Optional) Prepare read depth of autosomes when using a WGS sample.] for more details.
@@ -295,7 +338,7 @@ Print help message.
 
 
 
-# 5. preparing virus genome reference file
+# 5. preparing virus genome reference file (required only when running GitHub scripts, not required to run the Singularity container)
 
 ###  prepare virus genome reference file
 This tool requires a virus reference genome. This file can be downloaded from NCBI.
