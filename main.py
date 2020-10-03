@@ -118,6 +118,22 @@ filenames.hhv6b_gatk_naive    =os.path.join(args.outdir, 'hhv6b_reconstructed.fa
 filenames.hhv6a_metaspades_o  =os.path.join(args.outdir, 'hhv6a_metaspades_assembly')
 filenames.hhv6b_metaspades_o  =os.path.join(args.outdir, 'hhv6b_metaspades_assembly')
 
+filenames.hhv6_dr_ref         =os.path.join(init.base,   'lib/HHV6_only_DR.fa')
+filenames.hhv6_dr_index       =os.path.join(init.base,   'lib/hisat2_index/HHV6_only_DR')
+filenames.mapped_to_dr_bam    =os.path.join(args.outdir, 'mapped_to_DR_dedup.bam')
+filenames.markdup_metrix_dr   =os.path.join(args.outdir, 'mark_duplicate_metrix_DR.txt')
+filenames.bedgraph_dr         =os.path.join(args.outdir, 'mapped_to_DR.bedgraph')
+filenames.summary_dr          =os.path.join(args.outdir, 'mapping_DR_summary.txt')
+filenames.high_cov_pdf_dr     =os.path.join(args.outdir, 'coverage_DR.pdf')
+
+filenames.hhv6a_dr_vcf_gz     =os.path.join(args.outdir, 'hhv6a_DR.vcf.gz')
+filenames.hhv6a_dr_norm_vcf_gz=os.path.join(args.outdir, 'hhv6a_DR_norm.vcf.gz')
+filenames.hhv6a_dr_gatk_naive =os.path.join(args.outdir, 'hhv6a_DR_reconstructed.fa')
+filenames.hhv6b_dr_vcf_gz     =os.path.join(args.outdir, 'hhv6b_DR.vcf.gz')
+filenames.hhv6b_dr_norm_vcf_gz=os.path.join(args.outdir, 'hhv6b_DR_norm.vcf.gz')
+filenames.hhv6b_dr_gatk_naive =os.path.join(args.outdir, 'hhv6b_DR_reconstructed.fa')
+
+
 # 0. Unmapped read retrieval
 if args.alignmentin is True:
     import retrieve_unmapped
@@ -148,13 +164,21 @@ if mapping.read_mapped is True:
     identify_high_cov.identify_high_cov_virus_from_bedgraph(args, params, filenames)
     
     # 3. reconstruct HHV-6
-    import reconstruct_hhv6
+    import reconstruct_hhv6,reconstruct_hhv6_dr
     if identify_high_cov.hhv6a_highcov is True:
-        log.logger.info('HHV-6A sequence reconstruction started.')
+        log.logger.info('HHV-6A full sequence reconstruction started.')
         reconstruct_hhv6.reconst_a(args, params, filenames, hhv6a_refid)
+        log.logger.info('HHV-6A DR sequence reconstruction started.')
+        reconstruct_hhv6_dr.map_to_dr(args, params, filenames, hhv6a_refid)
+        reconstruct_hhv6_dr.output_summary(args, params, filenames)
+        reconstruct_hhv6_dr.reconst_a(args, params, filenames, hhv6a_refid)
     if identify_high_cov.hhv6b_highcov is True:
-        log.logger.info('HHV-6B sequence reconstruction started.')
+        log.logger.info('HHV-6B full sequence reconstruction started.')
         reconstruct_hhv6.reconst_b(args, params, filenames, hhv6b_refid)
+        log.logger.info('HHV-6B DR sequence reconstruction started.')
+        reconstruct_hhv6_dr.map_to_dr(args, params, filenames, hhv6b_refid)
+        reconstruct_hhv6_dr.output_summary(args, params, filenames)
+        reconstruct_hhv6_dr.reconst_b(args, params, filenames, hhv6b_refid)
     if args.keep is False:
         os.remove(filenames.mapped_to_virus_bai)
 else:
