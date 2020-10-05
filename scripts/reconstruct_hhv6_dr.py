@@ -33,6 +33,9 @@ def map_to_dr(args, params, filenames, hhv6_refid):
         if not out.returncode == 0:
             log.logger.error('Error occurred during mapping.')
             exit(1)
+        if not args.keep is True:
+            os.remove(filenames.unmapped_merged_1)
+            os.remove(filenames.unmapped_merged_2)
         # sort
         pysam.sort('-@', str(thread_n), '-o', filenames.mapped_sorted, filenames.mapped_unsorted_bam)
         if not args.keep is True:
@@ -125,7 +128,7 @@ def output_summary(args, params, filenames):
                                 else:
                                     ratio_ave_virus_depth_to_autosome_depth='NA'
                                 high_cov_judge='False'
-                            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
+                            outfile.write('%s_DR\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
                             tmp_retain=[]
                         total_len=0
                         covs=[]
@@ -159,7 +162,7 @@ def output_summary(args, params, filenames):
                 else:
                     ratio_ave_virus_depth_to_autosome_depth='NA'
                 high_cov_judge='False'
-            outfile.write('%s\tvirus_exist=%s\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, high_cov_judge, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
+            outfile.write('%s_DR\tgenome_length=%d;mapped_length=%d;perc_genome_mapped=%f;average_depth=%f;average_depth_of_mapped_region=%f;ratio_ave_virus_depth_to_autosome_depth=%s\tfasta_header=%s\n' % (prev_id, total_len, cov_len, 100 * genome_covered, ave_depth, ave_depth_norm, ratio_ave_virus_depth_to_autosome_depth, virus_names[prev_id]))
         if len(high_cov) >= 1:
             log.logger.info('high_cov_DR=%s' % ';'.join([ l[0] for l in high_cov ]))
         
@@ -367,9 +370,9 @@ def reconst_b(args, params, filenames, refseqid):
         os.remove(filenames.tmp_fa_dict)
         # remove unnecessary files
         if args.keep is False:
-            os.remove(filenames.hhv6b_vcf_gz +'.tbi')
-            os.remove(filenames.hhv6b_norm_vcf_gz)
-            os.remove(filenames.hhv6b_norm_vcf_gz +'.csi')
+            os.remove(filenames.hhv6b_dr_vcf_gz +'.tbi')
+            os.remove(filenames.hhv6b_dr_norm_vcf_gz)
+            os.remove(filenames.hhv6b_dr_norm_vcf_gz +'.csi')
         # remove unnecessary files
         os.remove(filenames.tmp_bam)
         

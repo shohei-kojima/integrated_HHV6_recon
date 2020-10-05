@@ -121,6 +121,7 @@ filenames.hhv6b_metaspades_o  =os.path.join(args.outdir, 'hhv6b_metaspades_assem
 filenames.hhv6_dr_ref         =os.path.join(init.base,   'lib/HHV6_only_DR.fa')
 filenames.hhv6_dr_index       =os.path.join(init.base,   'lib/hisat2_index/HHV6_only_DR')
 filenames.mapped_to_dr_bam    =os.path.join(args.outdir, 'mapped_to_DR_dedup.bam')
+filenames.mapped_to_dr_bai    =os.path.join(args.outdir, 'mapped_to_DR_dedup.bai')
 filenames.markdup_metrix_dr   =os.path.join(args.outdir, 'mark_duplicate_metrix_DR.txt')
 filenames.bedgraph_dr         =os.path.join(args.outdir, 'mapped_to_DR.bedgraph')
 filenames.summary_dr          =os.path.join(args.outdir, 'mapping_DR_summary.txt')
@@ -181,6 +182,8 @@ if mapping.read_mapped is True:
         reconstruct_hhv6_dr.reconst_b(args, params, filenames, hhv6b_refid)
     if args.keep is False:
         os.remove(filenames.mapped_to_virus_bai)
+        if os.path.exists(filenames.mapped_to_dr_bai) is True:
+            os.remove(filenames.mapped_to_dr_bai)
 else:
     log.logger.info('No read was mapped.')
 
