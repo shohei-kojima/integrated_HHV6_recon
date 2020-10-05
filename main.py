@@ -11,7 +11,7 @@ import os,sys,datetime,argparse,glob,logging
 
 
 # version
-version='2020/05/10'
+version='2020/10/05'
 
 
 # HHV-6 refseq IDs
