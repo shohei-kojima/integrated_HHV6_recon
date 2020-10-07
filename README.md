@@ -206,39 +206,57 @@ python main.py \
 # output files
 ./result_out/
 ├── for_debug.log
+├── hhv6a_DR_reconstructed.fa
+├── hhv6a_DR.vcf.gz
 ├── hhv6a_reconstructed.fa
 ├── hhv6a.vcf.gz
 ├── high_coverage_viruses.pdf
+├── mapped_to_DR.bedgraph
+├── mapped_to_DR_dedup.bam
 ├── mapped_to_virus.bedgraph
 ├── mapped_to_virus_dedup.bam
+├── mapping_DR_summary.txt
+├── mark_duplicate_metrix_DR.txt
 ├── mark_duplicate_metrix.txt
 └── virus_detection_summary.txt
 
 # file size (30x BAM was used as input)
-24K     ./result_out/for_debug.log
+40K     ./result_out/for_debug.log
+12K     ./result_out/hhv6a_DR_reconstructed.fa
+12K     ./result_out/hhv6a_DR.vcf.gz
 160K    ./result_out/hhv6a_reconstructed.fa
-172K    ./result_out/hhv6a.vcf.gz
-400K    ./result_out/high_coverage_viruses.pdf
-1.2M    ./result_out/mapped_to_virus.bedgraph
-8.2M    ./result_out/mapped_to_virus_dedup.bam
+60K     ./result_out/hhv6a.vcf.gz
+404K    ./result_out/high_coverage_viruses.pdf
+60K     ./result_out/mapped_to_DR.bedgraph
+1.3M    ./result_out/mapped_to_DR_dedup.bam
+888K    ./result_out/mapped_to_virus.bedgraph
+8.0M    ./result_out/mapped_to_virus_dedup.bam
+4.0K    ./result_out/mapping_DR_summary.txt
+4.0K    ./result_out/mark_duplicate_metrix_DR.txt
 4.0K    ./result_out/mark_duplicate_metrix.txt
-3.3M    ./result_out/virus_detection_summary.txt
+4.0K    ./result_out/virus_detection_summary.txt
 
 # brief explanation of output files
 ./result_out/
-├── for_debug.log               # log file
-├── hhv6a_reconstructed.fa      # reconstructed HHV-6
-├── hhv6a.vcf.gz                # VCF of HHV-6
-├── high_coverage_viruses.pdf   # plot of HHV-6 read depth
-├── mapped_to_virus.bedgraph    # mapping coverage
-├── mapped_to_virus_dedup.bam   # bam with reads used for analysis
-├── mark_duplicate_metrix.txt   # gatk markduplicate output
-└── virus_detection_summary.txt # main summary file
+├── for_debug.log                 # log file
+├── hhv6a_DR_reconstructed.fa     # reconstructed HHV-6, DR-only
+├── hhv6a_DR.vcf.gz               # VCF of HHV-6 DR
+├── hhv6a_reconstructed.fa        # reconstructed HHV-6, full-genome
+├── hhv6a.vcf.gz                  # VCF of HHV-6
+├── high_coverage_viruses.pdf     # plot of HHV-6 read depth
+├── mapped_to_DR.bedgraph         # mapping coverage of DR
+├── mapped_to_DR_dedup.bam        # bam with reads used for DR analysis
+├── mapped_to_virus.bedgraph      # mapping coverage
+├── mapped_to_virus_dedup.bam     # bam with reads used for analysis
+├── mapping_DR_summary.txt        # DR mapping summary file
+├── mark_duplicate_metrix_DR.txt  # gatk markduplicate output of DR region
+├── mark_duplicate_metrix.txt     # gatk markduplicate output
+└── virus_detection_summary.txt   # main summary file
 ```
 
 
 ### 'virus_detection_summary.txt'
-This is one of the main result files for most users. This contains read coverage information of each virus genome used in the viral genomes input file. Currently, this pipeline is supported for detecting and reconstructing endogenous or chromosomally-integrated HHV-6, in which case exogenous HHV-6A and HHV-6B reference sequences are used. However, the computational cost of adding additional viral genomes for detection is low, and we have been able to detect (but not reconstruct) other integrated viruses using this pipeline.
+**This is one of the main result files for most users.** This contains read coverage information of each virus genome used in the viral genomes input file. Currently, this pipeline is supported for detecting and reconstructing endogenous or chromosomally-integrated HHV-6, in which case exogenous HHV-6A and HHV-6B reference sequences are used. However, the computational cost of adding additional viral genomes for detection is low, and we have been able to detect (but not reconstruct) other integrated viruses using this pipeline.
 
 - 1st column: RefSeq ID (fasta header without attribution)
 - 2nd column: Whether virus-derived reads are abundantly detected (consistent with germline or high-fraction mosaic integration) or not
@@ -251,22 +269,38 @@ This is one of the main result files for most users. This contains read coverage
     - ratio_ave_virus_depth_to_autosome_depth: Average of mapped read depth of mapped regions divided by autosome depth provided with '-depth' option. Available only when '-depth' option was specified. Otherwise, 'NA'.
 - 4th column: attribution of fasta header
 
+### 'mapping_DR_summary.txt'
+**This is one of the main result files for most users.** This contains read coverage information of DR regions of HHV-6.
+
+- 1st column: RefSeq ID (fasta header without attribution)
+- 2nd column: Coverage information
+    - genome_length: Length of the virus genome
+    - mapped_length: Length of the virus genome covered by one or more mapped reads
+    - perc_genome_mapped: Percent of virus genome with one or more reads
+    - average_depth: Average of mapped read depth (average of whole viral genome)
+    - average_depth_of_mapped_region: Average of mapped read depth of mapped regions (average of only mapped regions)
+    - ratio_ave_virus_depth_to_autosome_depth: Average of mapped read depth of mapped regions divided by autosome depth provided with '-depth' option. Available only when '-depth' option was specified. Otherwise, 'NA'.
+- 3rd column: attribution of fasta header
+
 ### 'hhv6a_reconstructed.fa', 'hhv6b_reconstructed.fa'
-This is one of the main result files for most users. This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.'
+**This is one of the main result files for most users.** This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.' DR regions in this sequence is NOT accurate. For analysis on DR (for example, phylogenetic analysis), please use another file 'hhv6[a or b]_DR_reconstructed.fa'.
+
+### 'hhv6a_DR_reconstructed.fa'
+**This is one of the main result files for most users.** This file contains HHV-6 DR sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.'
 
 ### 'high_coverage_viruses.pdf'
 This is one of the main result files for most users who are using this tool to screen for additional potential integrated viruses. If there are one or more viruses in your sample, this tool outputs read coverage of those viruses for visual inspection.
 
-### 'hhv6a.vcf.gz', 'hhv6b.vcf.gz'
+### 'hhv6a.vcf.gz', 'hhv6b.vcf.gz', 'hhv6a_DR.vcf.gz', hhv6b_DR.vcf.gz
 This is one of the main result files for most users. This file contains variant calls. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B.
 
-### 'mapped_to_virus_dedup.bam'
+### 'mapped_to_virus_dedup.bam', 'mapped_to_DR_dedup.bam'
 BAM file containing alignment with virus genomes.
 
-### 'mapped_to_virus.bedgraph'
+### 'mapped_to_virus.bedgraph', 'mapped_to_DR.bedgraph'
 Read depth of virus genomes.
 
-### 'mark_duplicate_metrix.txt'
+### 'mark_duplicate_metrix.txt', 'mark_duplicate_metrix_DR.txt'
 Summary of picard MarkDuplicates running with 'mapped_to_virus_dedup.bam.'
 
 ### 'hhv6a_metaspades_assembly', 'hhv6b_metaspades_assembly'
@@ -380,7 +414,7 @@ Please specify './bwa_index/viral_genomic_seq' with '-vrefindex' option.
 
 
 
-# 6. (Optional) Prepare read depth of autosomes when using a WGS sample.
+# 6. (Optional) Prepare read depth of autosomes when using a WGS sample (not available for the Singularity container).
 We highly recommend to input autosome depth of an input WGS to calculate a value: average_depth_of_mapped_region / autosome depth.
 You first need to run `samtools coverage` to calculate depth of each chromosome. The output from `samtools coverage` contains mean depth of each chromosome. This program takes the output file from `samtools coverage` to calculate mean depth of autosomes. Please specify the output file from `samtools coverage` with the '-i' option. Please specify names of autosomes by specifying a file containing names of autosomes with '-chr' option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_style.txt' by default.
 ```
