@@ -1,4 +1,4 @@
-# This is a README file for iciHHV6_reconstruction_pipeline
+# This is a README file for integrated_HHV-6_reconstruction_pipeline
 
 # Flowchart
 <img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
@@ -8,7 +8,7 @@
 ## 1.1 Use Singularity container (recommended)
 This tool is available as a Singularity container.
 Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
-Please contact us when you would like to use this.
+Please contact us if you would like to use this.
 
 It requires Singularity version 3 (does not work on version 2) to run the container.
 Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
@@ -18,12 +18,12 @@ You do NOT need to set up environment described in the next chapeter `1.2 Use sc
 ## 1.2 Use scripts available from GitHub
 You can use the original scripts available from GitHub instead of the Singularity container.
 In this case, you need to set up environment in your Linux for this tool.
-Envriomnet set-up described below is not needed if you use the Singularity container.
+Environment set-up described below is not needed if you use the Singularity container.
 We tested this tool in Ubuntu 18.04, CentOS 7.7.1908, Red Hat 7.3.
 
 ### Required software for running with default settings
-All tools listed here are needed to be installed and added to $PATH.
-We recommend to use Anaconda3.
+All tools listed here need to be installed and added to $PATH.
+We recommend Anaconda3.
 
 - Python 3.7 or later  **Please use Python 3.7 or later. Python 3.6 does NOT work!**
 - hisat2 2.1.0 or later 
@@ -32,7 +32,7 @@ We recommend to use Anaconda3.
 - bamCoverage 3.3.1 or later (deeptools 3.3.1 or later)
 - gatk 4.1.7.0 or later
 - picard 2.21.9 or later
-- java (version matches to your picard)
+- java (version depends on your version of picard)
 
 ### Optional prerequisites
 - bwa 0.7.17 or later (if you specify '-bwa' option)
@@ -96,8 +96,8 @@ java -jar /where/to/install/picard.jar -h
 
 # 2. quick usage guide for the impatient
 ## 2.1 Run Singularity container (recommended)
-We highly recommend to use Singularity container. This container have exactly the same functionality to the original scripts in GitHub.
-This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM file with single-end reads is NOT supported.
+We highly recommend using this tool via the provided Singularity container. This container has exactly the same functionality as the original scripts in GitHub.
+This tool takes as input a BAM or CRAM file containing PAIRED-end reads, or a fastq file. BAM/CRAM files with single-end reads are NOT supported.
 
 ### when you use your BAM file as an input
 ```
@@ -168,9 +168,9 @@ python main.py \
 -p 4
 ```
 
-This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM file with single-end reads is NOT supported.
+This tool takes a BAM or CRAM file containing PAIRED-end reads. BAM/CRAM files with single-end reads are NOT supported.
 
-By default, only unmapped reads are used for mapping to viruses when BAM or CRAM file is specified as an input. If you want to use all discordant reads (e.g. reads without sam flag '2') for mapping to viruses, you can specify '-all_discordant' option. Discordant reads include read-pairs with distantly mapped positions and ones with low MAPQ; therefore, the number of discordant reads are far higher than unmapped reads. This option is only available when '-alignmentin' option is specified. This option is suspected to be less accurate than using default settingss (= using only unmapped reads), however the coverage of reconstructed sequence may be higher than default. Please be aware of this caveat when using this option.
+By default, only unmapped reads are used for mapping to viruses when BAM or CRAM file is specified as an input. If you want to use all discordant reads (e.g. reads without sam flag '2') for mapping to viruses, you can specify '-all_discordant' option. Discordant reads include read-pairs with distantly mapped positions and ones with low MAPQ; therefore, the number of discordant reads are far higher than unmapped reads. This option is only available when '-alignmentin' option is specified. This option is suspected to be less accurate than using default settingss (= using only unmapped reads), however the coverage of the reconstructed viral sequence may be higher than default. Please be aware of this caveat when using this option.
 
 ### when you use your fastq files as inputs (fastqin option)
 ```
@@ -256,7 +256,7 @@ python main.py \
 
 
 ### 'virus_detection_summary.txt'
-**This is one of the main result files for most users.** This contains read coverage information of each virus genome used in the viral genomes input file. Currently, this pipeline is supported for detecting and reconstructing endogenous or chromosomally-integrated HHV-6, in which case exogenous HHV-6A and HHV-6B reference sequences are used. However, the computational cost of adding additional viral genomes for detection is low, and we have been able to detect (but not reconstruct) other integrated viruses using this pipeline.
+**This is one of the main result files for most users.** This contains read coverage information of each virus genome used in the viral genomes input file. This pipeline is primarily designed for detection and reconstruction of endogenous or chromosomally-integrated HHV-6, in which case exogenous HHV-6A and HHV-6B reference sequences are used. However, the computational cost of adding additional viral genomes for detection is low, and we have been able to detect (but not reconstruct) other integrated viruses using this pipeline.
 
 - 1st column: RefSeq ID (fasta header without attribution)
 - 2nd column: Whether virus-derived reads are abundantly detected (consistent with germline or high-fraction mosaic integration) or not
@@ -283,10 +283,10 @@ python main.py \
 - 3rd column: attribution of fasta header
 
 ### 'hhv6a_reconstructed.fa', 'hhv6b_reconstructed.fa'
-**This is one of the main result files for most users.** This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.' DR regions in this sequence is NOT accurate. For analysis on DR (for example, phylogenetic analysis), please use another file 'hhv6[a or b]_DR_reconstructed.fa'.
+**This is one of the main result files for most users.** This file contains HHV-6 sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.' Please note that the reconstrucction of DR regions in this sequence is expected to be less accurate than the dedicated DR reconstruction. For analysis of DR sequences (for example, phylogenetic analysis), please use another file 'hhv6[a or b]_DR_reconstructed.fa'.
 
 ### 'hhv6a_DR_reconstructed.fa'
-**This is one of the main result files for most users.** This file contains HHV-6 DR sequence reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.'
+**This is one of the main result files for most users.** This file contains HHV-6 DR sequences reconstructed with called variants. This tool outputs this file only when your sample contained either HHV-6A or HHV-6B. Genomic regions where do not have any reads (= 0 reads mapped) are masked by a character 'N.'
 
 ### 'high_coverage_viruses.pdf'
 This is one of the main result files for most users who are using this tool to screen for additional potential integrated viruses. If there are one or more viruses in your sample, this tool outputs read coverage of those viruses for visual inspection.
@@ -313,7 +313,7 @@ Log file. Stores all information, including input arguments and parameter settin
 
 # 4. options
 ### '-alignmentin'
-Specify when you use a BAM or CRAM file as an input. You need to specify which input file type you are using with '-b' or '-c' option. When you use CRAM file as an input, you also need to specify reference genome with '-fa' option.
+Specify this option when you use a BAM or CRAM file as an input. You need to specify which input file type you are using with '-b' or '-c' option. When you use CRAM file as an input, you also need to specify reference genome with '-fa' option.
 
 ### '-b [BAM file]'
 Use when specifing BAM file. Available only when '-alignmentin' is also specified.
@@ -335,15 +335,15 @@ Use when specifing paired fastq files. Available only when '-fastqin' is also sp
 Use when specifying single-end fastq file. Available only when '-fastqin' is also specified.
 
 ### '-vref [reference virus genome file]'
-You do not need to specify this when running the Singularity container. Singularity container already contains iciHHV-6A and iciHHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
+You do not need to specify this when running the Singularity container. Singularity container already contains HHV-6A and HHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
 Use when specifing reference virus genome file available from NCBI. This option is always required when running scripts downloaded from GitHub. See 'preparing virus genome reference file' section for details.
 
 ### '-vrefindex [index of reference virus genome file]'
-You do not need to specify this when running the Singularity container. Singularity container already contains hisat2 index of iciHHV-6A and iciHHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
+You do not need to specify this when running the Singularity container. Singularity container already contains hisat2 index of HHV-6A and HHV-6B reference sequences (NC_001664.4 and NC_000898.1, respectively).
 Use when specifing reference virus genome index. This option is always required when running scripts downloaded from GitHub. See 'preparing virus genome reference file' section for detail.
 
 ### '-depth'
-This is optional, but we highly recommend to use this. When you are using WGS data, you can specify autosome depth with this option. When specified, this pipeline outputs a value (average_depth_of_mapped_region / autosome depth). This is particularly important when juding whether a detected virus sequence is present with most cell's DNA or not. Please see a section [6. (Optional) Prepare read depth of autosomes when using a WGS sample.] for more details.
+This is optional, but we highly recommend using this option to improve the interpretability of your results. When you are using WGS data, you can specify the autosome depth with this option. When specified, this pipeline outputs a value (average_depth_of_mapped_region / autosome depth). This is particularly important when juding whether a detected virus sequence is present in most cell's DNA or not. Please see a section [6. (Optional) Prepare read depth of autosomes when using a WGS sample.] for more details.
 
 ### '-phage'
 When specified, this pipeline also reconstructs phage sequences. Generally, there are lots of phage-derived sequences (including spike-in PhiX) in  WGS data. By default, this pipeline does not reconstruct virus genomes whose name contains the word 'phage' or 'Phage'.
@@ -415,7 +415,7 @@ Please specify './bwa_index/viral_genomic_seq' with '-vrefindex' option.
 
 
 # 6. (Optional) Prepare read depth of autosomes when using a WGS sample (not available for the Singularity container).
-We highly recommend to input autosome depth of an input WGS to calculate a value: average_depth_of_mapped_region / autosome depth.
+We highly recommend to input the average autosomal depth of the input WGS data in order to calculate the "average_depth_of_mapped_region / autosome depth" value. This value is useful to approximate the copy number of the viral genome under the assumption that it represents a chromosomally-integrated sequence.
 You first need to run `samtools coverage` to calculate depth of each chromosome. The output from `samtools coverage` contains mean depth of each chromosome. This program takes the output file from `samtools coverage` to calculate mean depth of autosomes. Please specify the output file from `samtools coverage` with the '-i' option. Please specify names of autosomes by specifying a file containing names of autosomes with '-chr' option. When you did not specify a file with '-chr' option, this script will use '/path/to/prog/lib/human_autosomes_ucsc_style.txt' by default.
 ```
 samtools coverage --reference ref.fa in.cram > samtools_coverage.txt
