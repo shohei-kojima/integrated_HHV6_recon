@@ -41,7 +41,7 @@ parser.add_argument('-overwrite', help='Optional. Specify if you overwrite previ
 parser.add_argument('-keep', help='Optional. Specify if you do not want to delete temporary files.', action='store_true')
 parser.add_argument('-p', metavar='int', type=int, help='Optional. Number of threads. 3 or more is recommended. Default: 2', default=2)
 parser.add_argument('-v', '--version', help='Print version.', action='store_true')
-parser.add_argument('-screening', help='Optional. Specify if you use BAM/CRAM file for input. You also need to specify either -b or -c.', action='store_false', help=argparse.SUPPRESS)
+parser.add_argument('-screening', help=argparse.SUPPRESS)
 parser.add_argument('-singularity', action='store_true', help=argparse.SUPPRESS)
 args=parser.parse_args()
 
