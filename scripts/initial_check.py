@@ -72,9 +72,9 @@ def check(args, argv):
         # for singularity
         if args.singularity is True:
             if args.vref is None:
-                args.vref='/usr/local/bin/iciHHV6_reconstruction/lib/hhv6.fa'
+                args.vref='/usr/local/bin/integrated_hhv6_recon/lib/hhv6.fa'
             if args.vrefindex is None:
-                args.vrefindex='/usr/local/bin/iciHHV6_reconstruction/lib/hisat2_index/hhv6'
+                args.vrefindex='/usr/local/bin/integrated_hhv6_recon/lib/hisat2_index/hhv6'
             if args.picard is None:
                 args.picard='/usr/local/bin/picard.jar'
         
