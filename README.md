@@ -101,7 +101,7 @@ This tool takes as input a BAM or CRAM file containing PAIRED-end reads, or a fa
 
 ### when you use your BAM file as an input
 ```
-singularity exec iciHHV6_reconstruction_[version].sif reconst \
+singularity exec int_HHV6_recon_[version].sif recon \
 -alignmentin \
 -b your_file.bam \
 -p 4
@@ -109,7 +109,7 @@ singularity exec iciHHV6_reconstruction_[version].sif reconst \
 
 ### when you use your CRAM file as an input
 ```
-singularity exec iciHHV6_reconstruction_[version].sif reconst \
+singularity exec int_HHV6_recon_[version].sif recon \
 -alignmentin \
 -c your_file.cram \
 -fa /path/to/reference_genome_of_cram.fa \
@@ -118,7 +118,7 @@ singularity exec iciHHV6_reconstruction_[version].sif reconst \
 
 ### when you use your fastq files as inputs
 ```
-singularity exec iciHHV6_reconstruction_[version].sif reconst \
+singularity exec int_HHV6_recon_[version].sif recon \
 -fastqin \
 -fq1 your_file_1.fastq \
 -fq2 your_file_2.fastq \
@@ -439,6 +439,19 @@ python main.py \
 -picard /path/to/picard.jar \
 -p 4
 ```
+
+# 7. Binding host directories on the Singularity container
+The directories `$HOME`, `/tmp`, `/proc`, `/sys`, and `/dev` will be automatically bound and visible on the container by default (see [here](https://singularity.lbl.gov/docs-mount#system-defined-bind-points)). When you want to bind other directories, 10 directories on the container (`/mnt/mnt0`, `/mnt/mnt1`, `/mnt/mnt2`, `/mnt/mnt3`, `/mnt/mnt4`, `/mnt/mnt5`, `/mnt/mnt6`, `/mnt/mnt7`, `/mnt/mnt8`, and `/mnt/mnt9`) are available. To specify the directories on the host and container, you can set up `SINGULARITY_BINDPATH`.
+```
+# bind host directories on the container
+export SINGULARITY_BINDPATH="/lustre/share:/mnt/mnt0"
+
+singularity exec int_HHV6_recon_[version].sif recon \
+-alignmentin \
+-b /mnt/mnt0/path_to/your_file.bam \
+-p 4
+```
+Please see [here](https://singularity.lbl.gov/docs-mount#specifying-bind-paths) for how to bind host directories on a container.
 
 # LICENSE
 Copyright (c) 2020 RIKEN
