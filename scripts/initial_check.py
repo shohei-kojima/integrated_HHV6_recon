@@ -25,6 +25,7 @@ def which(program):
             path = path.strip('"')
             exe_file = os.path.join(path, program)
             if is_exe(exe_file):
+                log.logger.debug('%s found: %s' % (program, exe_file))
                 return exe_file
     return None
 
@@ -92,7 +93,7 @@ def check(args, argv):
                 exit(1)
         if args.c is not None:
             if args.fa is None:
-                log.logger.error('Reference genome (%s) was not specified.' % args.fa)
+                log.logger.error('Reference genome was not specified.')
                 exit(1)
             elif os.path.exists(args.fa) is False:
                 log.logger.error('Reference genome (%s) was not found.' % args.fa)
