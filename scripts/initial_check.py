@@ -31,7 +31,7 @@ def which(program):
     return None
 
 
-def check(args, argv):
+def check(args, argv, base):
     log.logger.debug('started')
     try:
         log.logger.debug('command line:\n'+ ' '.join(argv))
@@ -67,6 +67,7 @@ def check(args, argv):
                 log.logger.error('metaspades.py not found in $PATH. Please check metaspades.py is installed and added to PATH.')
                 exit(1)
 
+
         # check prerequisite modules
         import gzip
         import matplotlib
@@ -80,11 +81,21 @@ def check(args, argv):
                 args.vrefindex='/usr/local/bin/integrated_HHV6_recon/lib/hisat2_index/hhv6'
             if args.picard is None:
                 args.picard='/usr/local/bin/picard.jar'
+        else:
+            if args.vref is None:
+                args.vref=os.path.join(base, 'lib/hhv6.fa')
+            if args.vrefindex is None:
+                args.vrefindex=os.path.join(base, 'lib/hisat2_index/hhv6')
+
         
         # check file paths
-        if os.path.exists(args.picard) is False:
-            log.logger.error('%s not found. Please check %s is installed.' % (args.picard, args.picard))
+        if args.picard is None:
+            log.logger.error('Please specify path to picard.jar with `-picard` flag.')
             exit(1)
+        else:
+            if os.path.exists(args.picard) is False:
+                log.logger.error('%s not found. Please check %s is installed.' % (args.picard, args.picard))
+                exit(1)
         if args.bwa is True:
             if os.path.exists(args.vrefindex +'.bwt') is False:
                 log.logger.error('bwa index (%s) was not found.' % args.vrefindex)

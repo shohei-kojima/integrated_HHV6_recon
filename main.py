@@ -11,7 +11,7 @@ import os,sys,datetime,argparse,glob,logging
 
 
 # version
-version='2020/10/05'
+version='2020/12/02'
 
 
 # HHV-6 refseq IDs
@@ -25,7 +25,8 @@ parser.add_argument('-alignmentin', help='Optional. Specify if you use BAM/CRAM 
 parser.add_argument('-b', metavar='str', type=str, help='Either -b or -c is Required. Specify input mapped paired-end BAM file.')
 parser.add_argument('-c', metavar='str', type=str, help='Either -b or -c is Required. Specify input mapped paired-end CRAM file.')
 parser.add_argument('-fa', metavar='str', type=str, help='Required. Specify reference genome which are used when input reads were mapped. Example: GRCh38DH.fa')
-parser.add_argument('-all_discordant', help='Optional. Specify if you use all discordant reads from BAM/CRAM file for mapping to viruses. Otherwise, only unmapped reads will be used (default).', action='store_true')
+parser.add_argument('-use_mate_mapped', help='Optional. Specify if you use unmapped reads with their mate was mapped. Otherwise, only both R1 and R2 unmapped will be used by default.', action='store_true')
+parser.add_argument('-all_discordant', help='Optional. Specify if you use all discordant reads, including not-properly paired reads. Otherwise, only both R1 and R2 unmapped will be used by default.', action='store_true')
 parser.add_argument('-fastqin', help='Optional. Specify if you use unmapped reads for input instead of BAM/CRAM file. You also need to specify -fq1 and -fq2.', action='store_true')
 parser.add_argument('-single', help='Optional. Specify if you use single-end unmapped reads for input instead of BAM/CRAM file. Only works when specifing -fastqin option. You also need to specify -fq1.', action='store_true')
 parser.add_argument('-fq1', metavar='str', type=str, help='Specify unmapped fastq file, read-1 of read pairs.')
@@ -41,7 +42,6 @@ parser.add_argument('-overwrite', help='Optional. Specify if you overwrite previ
 parser.add_argument('-keep', help='Optional. Specify if you do not want to delete temporary files.', action='store_true')
 parser.add_argument('-p', metavar='int', type=int, help='Optional. Number of threads. 3 or more is recommended. Default: 2', default=2)
 parser.add_argument('-v', '--version', help='Print version.', action='store_true')
-parser.add_argument('-screening', help=argparse.SUPPRESS, action='store_false')
 parser.add_argument('-singularity', action='store_true', help=argparse.SUPPRESS)
 args=parser.parse_args()
 
@@ -65,7 +65,7 @@ import initial_check
 print()
 log.logger.info('You are using version "%s"' % version)
 log.logger.info('Initial check started.')
-initial_check.check(args, sys.argv)
+initial_check.check(args, sys.argv, init.base)
 
 
 # set up
