@@ -13,7 +13,7 @@ import os,sys
 def init(args, version):
     # version check
     if args.version is True:
-        print('iciHHV-6 reconstruction pipeline\nVersion = %s' % version)
+        print('integrated HHV-6 reconstruction pipeline\nVersion = %s' % version)
         exit(0)
     
     # pythonpath

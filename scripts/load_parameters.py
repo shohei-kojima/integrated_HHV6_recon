@@ -23,7 +23,8 @@ class load:
             self.gzip_compresslevel=1
             self.metaspades_kmer='21,33,55'
             self.metaspades_memory=4
-
+            self.quick_check_read_num=1000000
+            
             params_for_debug=[]
             for k,v in self.__dict__.items():
                 params_for_debug.append('%s=%s' % (k, str(v)))
