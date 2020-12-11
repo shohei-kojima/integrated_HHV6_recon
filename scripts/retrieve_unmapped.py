@@ -22,9 +22,9 @@ def retrieve_unmapped_reads(args, params, filenames):
         # retrieve discordant reads, default
         if args.use_mate_mapped is False and args.all_discordant is False:
             if not args.b is None:
-                pysam.view('-@', '%d' % thread_n, '-f', '12', '-F', '3842', '-b', '-o', filenames.discordant_bam, args.b, '*', catch_stdout=False)
+                pysam.view('-@', '%d' % thread_n, '-f', '12', '-F', '3842', '-b', '-o', filenames.discordant_bam, args.b, catch_stdout=False)
             elif not args.c is None:
-                pysam.view('-@', '%d' % thread_n, '-f', '12', '-F', '3842', '-b', '-o', filenames.discordant_bam, '--reference', args.fa, args.c, '*', catch_stdout=False)
+                pysam.view('-@', '%d' % thread_n, '-f', '12', '-F', '3842', '-b', '-o', filenames.discordant_bam, '--reference', args.fa, args.c, catch_stdout=False)
             pysam.fastq('-@', '%d' % thread_n, '-N', '-0', '/dev/null', '-1', filenames.unmapped_merged_pre1, '-2', filenames.unmapped_merged_pre2, '-s', '/dev/null', filenames.discordant_bam)
             if args.keep is False:
                 os.remove(filenames.discordant_bam)
