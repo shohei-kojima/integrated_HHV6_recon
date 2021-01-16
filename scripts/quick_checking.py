@@ -56,14 +56,14 @@ def load_files(args, params, filenames):
         elif args.c is not None:
             cram_check(args.c)
             filenames.fpaths.append(args.c)
-            args.file_type='rb'
+            args.file_type='rc'
         elif args.bl is not None:
             with open(args.bl) as infile:
                 for line in infile:
                     path=line.strip()
                     bam_check(path)
                     filenames.fpaths.append(path)
-            args.file_type='rc'
+            args.file_type='rb'
         elif args.cl is not None:
             with open(args.cl) as infile:
                 for line in infile:
