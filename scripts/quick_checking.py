@@ -97,7 +97,7 @@ def checking(args, params, filenames):
         finalfile.write('#file\tnum_unmapped_read_analyzed\tnum_read_mapped_to_HHV6\tHHV6_exists?\n')
         for f in filenames.fpaths:
             if args.file_type == 'rb':
-                infile=pysam.AlignmentFile(f, 'rb')
+                infile=pysam.AlignmentFile(f, 'rb', check_sq=False)
             elif args.file_type == 'rc':
                 infile=pysam.AlignmentFile(f, 'rc', reference_filename=args.fa)
             n=0
