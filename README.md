@@ -1,14 +1,12 @@
-# This is a README file for integrated_HHV-6_reconstruction_pipeline
-
 # Flowchart
 <img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
 
 
 # 1. Getting started
 ## 1.1 Use Singularity container (recommended)
-This tool is available as a Singularity container.
+**This tool is available as a Singularity container.**
 Currently, the Singularity container is provided directly from Genome Immunobiology Lab, RIKEN.
-Please contact us if you would like to use this.
+Please contact [us](https://www.riken.jp/en/research/labs/ims/genom_immunobiol_riken_hakubi/index.html) if you would like to use this.
 
 It requires Singularity version 3 (does not work on version 2) to run the container.
 Please see [here](https://sylabs.io/guides/3.0/user-guide/installation.html) for installation of Singularity.
@@ -454,7 +452,8 @@ singularity exec int_HHV6_recon_[version].sif recon \
 Please see [here](https://singularity.lbl.gov/docs-mount#specifying-bind-paths) for how to bind host directories on a container.
 
 # LICENSE
-Copyright (c) 2020 RIKEN
+
+Copyright (c) 2020-2021 RIKEN
 All Rights Reserved.
 See file LICENSE for details.
 
