@@ -1,12 +1,16 @@
 # Welcome to the integrated_HHV6_recon page!
 
-Details of the usage is available in this [Wiki page](https://github.com/shohei-kojima/integrated_HHV6_recon/wiki).
+Details is available in [Wiki page](https://github.com/shohei-kojima/integrated_HHV6_recon/wiki).
 
 
+# About
+This tool extracts unmapped reads from WGS and maps on HHV-6A and HHV-6B. If there is abundant HHV-6 reads, it reconstructs HHV-6 sequence(s).
 
-# Flowchart
-<img src='https://github.com/shohei-kojima/iciHHV6_reconstruction/blob/master/lib/image_for_readme.png' width='320px'>
 
+# Citation
+Kojima et al, 2020, bioRxiv.
+
+https://www.biorxiv.org/content/10.1101/2020.11.20.390880v1
 
 
 # LICENSE
