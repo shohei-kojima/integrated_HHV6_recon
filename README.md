@@ -14,9 +14,6 @@ https://doi.org/10.1371/journal.pgen.1009324
 
 # LICENSE
 Copyright (c) 2020-2021 RIKEN  
-
 All Rights Reserved.  
-
 See file LICENSE for details.  
-
 This tool was developed by Shohei Kojima and Nicholas F. Parrish.  
