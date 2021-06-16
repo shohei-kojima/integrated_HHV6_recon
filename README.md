@@ -8,15 +8,15 @@ This tool extracts unmapped reads from WGS and maps on HHV-6A and HHV-6B. If the
 
 
 # Citation
-Kojima S, Kamada AJ, Parrish NF (2021) 
-Virus-derived variation in diverse human genomes. PLOS Genetics 17(4): e1009324. 
-https://doi.org/10.1371/journal.pgen.1009324 
+Kojima S, Kamada AJ, Parrish NF (2021)  
+Virus-derived variation in diverse human genomes. PLOS Genetics 17(4): e1009324.  
+https://doi.org/10.1371/journal.pgen.1009324  
 
 # LICENSE
-Copyright (c) 2020-2021 RIKEN 
+Copyright (c) 2020-2021 RIKEN  
 
-All Rights Reserved. 
+All Rights Reserved.  
 
-See file LICENSE for details. 
+See file LICENSE for details.  
 
-This tool was developed by Shohei Kojima and Nicholas F. Parrish.
+This tool was developed by Shohei Kojima and Nicholas F. Parrish.  
