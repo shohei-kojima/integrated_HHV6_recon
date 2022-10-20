@@ -203,7 +203,7 @@ def check_quick_check(args, argv, base):
                 exit(1)
         
         infiles=[]
-        for infile in [args.b, args.c, args.bl, args.cl]:
+        for infile in [args.b, args.c, args.bl, args.cl, args.s, args.sl]:
             if infile is not None:
                 infiles.append(infile)
         if len(infiles) >= 2:
