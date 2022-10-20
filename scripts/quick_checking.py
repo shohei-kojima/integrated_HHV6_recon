@@ -113,9 +113,9 @@ def checking(args, params, filenames):
                         read = ls[9]
                         qual = ls[10]
                         if not 'TAACCC' in read and not 'GGGTTA' in read:
-                            if ls[2] == '77':
+                            if ls[1] == '77':
                                 header='@%s/1' % readname
-                            elif ls[2] == '141':
+                            elif ls[1] == '141':
                                 header='@%s/2' % readname
                             else:
                                 continue
