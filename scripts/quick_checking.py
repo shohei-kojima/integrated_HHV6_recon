@@ -71,8 +71,14 @@ def load_files(args, params, filenames):
                     cram_check(path)
                     filenames.fpaths.append(path)
             args.file_type='rc'
+        elif args.s is not None:
+            filenames.fpaths.append(args.s)
+        elif args.sl is not None:
+            with open(args.sl) as infile:
+                for line in infile:
+                    path=line.strip()
+                    filenames.fpaths.append(path)
         log.logger.info('%d file(s) will be analyzed.' % len(filenames.fpaths))
-        
     except SystemExit:
         log.logger.debug('\n'+ traceback.format_exc())
         exit(1)
@@ -96,31 +102,60 @@ def checking(args, params, filenames):
         finalfile=open(filenames.final_result, 'w')
         finalfile.write('#file\tnum_unmapped_read_analyzed\tnum_read_mapped_to_HHV6\tHHV6_exists?\n')
         for f in filenames.fpaths:
-            if args.file_type == 'rb':
-                infile=pysam.AlignmentFile(f, 'rb', check_sq=False)
-            elif args.file_type == 'rc':
-                infile=pysam.AlignmentFile(f, 'rc', reference_filename=args.fa)
-            n=0
-            with open(filenames.unmapped, 'w') as outfile:
-                tmp=[]
-                for read in infile.fetch('*', until_eof=True):
-                    if read.is_unmapped:
-                        if not 'TAACCC' in read.query_sequence and not 'GGGTTA' in read.query_sequence:
-                            if read.is_read1 is True:
-                                header='@%s/1' % read.query_name
+            if args.s is not None or args.sl is not None:
+                infile=open(f)
+                n=0
+                with open(filenames.unmapped, 'w') as outfile:
+                    tmp=[]
+                    for line in infile:
+                        ls=line.split('\t')
+                        readname = ls[0]
+                        read = ls[9]
+                        qual = ls[10]
+                        if not 'TAACCC' in read and not 'GGGTTA' in read:
+                            if ls[2] == '77':
+                                header='@%s/1' % readname
+                            elif ls[2] == '141':
+                                header='@%s/2' % readname
                             else:
-                                header='@%s/2' % read.query_name
-                            tmp.append('%s\n%s\n+\n%s\n' % (header, read.query_sequence, read.qual))
+                                continue
+                            tmp.append('%s\n%s\n+\n%s\n' % (header, read, qual))
                             n += 1
-                    if len(tmp) == 100_000:
+                        if len(tmp) == 100_000:
+                            outfile.write(''.join(tmp))
+                            tmp=[]
+                        if n == read_num_limit:
+                            break
+                    if len(tmp) >= 1:
                         outfile.write(''.join(tmp))
-                        tmp=[]
-                    if n == read_num_limit:
-                        break
-                if len(tmp) >= 1:
-                    outfile.write(''.join(tmp))
-                outfile.flush()
-                os.fdatasync(outfile.fileno())
+                    outfile.flush()
+                    os.fdatasync(outfile.fileno())
+            else:
+                if args.file_type == 'rb':
+                    infile=pysam.AlignmentFile(f, 'rb', check_sq=False)
+                elif args.file_type == 'rc':
+                    infile=pysam.AlignmentFile(f, 'rc', reference_filename=args.fa)
+                n=0
+                with open(filenames.unmapped, 'w') as outfile:
+                    tmp=[]
+                    for read in infile.fetch('*', until_eof=True):
+                        if read.is_unmapped:
+                            if not 'TAACCC' in read.query_sequence and not 'GGGTTA' in read.query_sequence:
+                                if read.is_read1 is True:
+                                    header='@%s/1' % read.query_name
+                                else:
+                                    header='@%s/2' % read.query_name
+                                tmp.append('%s\n%s\n+\n%s\n' % (header, read.query_sequence, read.qual))
+                                n += 1
+                        if len(tmp) == 100_000:
+                            outfile.write(''.join(tmp))
+                            tmp=[]
+                        if n == read_num_limit:
+                            break
+                    if len(tmp) >= 1:
+                        outfile.write(''.join(tmp))
+                    outfile.flush()
+                    os.fdatasync(outfile.fileno())
             infile.close()
             if n == 0:
                 log.logger.info('No unmapped reads found in %s. Will continue anyway.' % (n, f))

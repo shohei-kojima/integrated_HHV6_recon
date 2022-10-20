@@ -11,15 +11,17 @@ import os,sys,datetime,argparse,glob,logging
 
 
 # version
-version='2020/12/02'
+version='2022/10/20'
 
 
 # args
 parser=argparse.ArgumentParser(description='')
 parser.add_argument('-b', metavar='str', type=str, help='Either -b or -c is Required. Specify input mapped paired-end BAM file.')
 parser.add_argument('-c', metavar='str', type=str, help='Either -b or -c is Required. Specify input mapped paired-end CRAM file.')
-parser.add_argument('-bl', metavar='str', type=str, help='Either -b or -c is Required. Specify file that contains paths to input  paired-end BAM files.')
-parser.add_argument('-cl', metavar='str', type=str, help='Either -b or -c is Required. Specify file that contains paths to input  paired-end CRAM files.')
+parser.add_argument('-bl', metavar='str', type=str, help='Either -b or -c is Required. Specify file that contains paths to input paired-end BAM files.')
+parser.add_argument('-cl', metavar='str', type=str, help='Either -b or -c is Required. Specify file that contains paths to input paired-end CRAM files.')
+parser.add_argument('-s', metavar='str', type=str, help='Specify file that contains unmapped SAM files.')
+parser.add_argument('-sl', metavar='str', type=str, help='Specify file that contains file paths of unmapped SAM files.')
 parser.add_argument('-fa', metavar='str', type=str, help='Required. Specify reference genome which are used when input reads were mapped. Example: GRCh38DH.fa')
 parser.add_argument('-outdir', metavar='str', type=str, help='Optional. Specify output directory. Default: ./result_quick_check', default='./result_quick_check')
 parser.add_argument('-overwrite', help='Optional. Specify if you overwrite previous results.', action='store_true')
