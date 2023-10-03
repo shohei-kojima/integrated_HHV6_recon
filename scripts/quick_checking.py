@@ -100,7 +100,7 @@ def checking(args, params, filenames):
         n_full=0
         
         finalfile=open(filenames.final_result, 'w')
-        finalfile.write('#file\tnum_unmapped_read_analyzed\tnum_read_mapped_to_HHV6\tHHV6_exists?\n')
+        finalfile.write('#file\tnum_unmapped_read_analyzed\tn_mapped_to_HHV6\tn_mapped_to_HHV6A\tn_mapped_to_HHV6B\tHHV6_exists?\n')
         for f in filenames.fpaths:
             if args.s is not None or args.sl is not None:
                 infile=open(f)
@@ -174,14 +174,21 @@ def checking(args, params, filenames):
             utils.gzip_or_del(args, params, filenames.unmapped)
             # count mapped
             mapped_n=0
+            mapped_a = 0
+            mapped_b = 0
             with open(filenames.mapped_sam) as infile:
                 for line in infile:
-                    if not line[0] == '@':
-                        ls=line.split()
-                        if not ls[5] == '*':
-                            readlen=len(ls[9])
-                            if ls[5] == '%dM' % readlen:
-                                mapped_n += 1
+                    if line[0] == '@':
+                        continue
+                    ls=line.split()
+                    if not ls[5] == '*':
+                        readlen=len(ls[9])
+                        if ls[5] == '%dM' % readlen:
+                            mapped_n += 1
+                            if ls[2] == 'NC_001664.4':
+                                mapped_a += 1
+                            elif ls[2] == 'NC_000898.1':
+                                mapped_b += 1
             mapped_ratio= mapped_n / n
             if mapped_ratio < no_hhv_threshold:
                 judge='False'
@@ -195,7 +202,7 @@ def checking(args, params, filenames):
             else:
                 judge='likely_Full-length'
                 n_full += 1
-            finalfile.write('%s\t%d\t%d\t%s\n' % (f, n, mapped_n, judge))
+            finalfile.write('%s\t%d\t%d\t%d\t%d\t%s\n' % (f, n, mapped_n, mapped_a, mapped_b, judge))
         utils.gzip_or_del(args, params, filenames.mapped_sam)
         finalfile.flush()
         os.fdatasync(finalfile.fileno())
